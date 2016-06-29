@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using System.Diagnostics;
 
-namespace CommandShell
+namespace RichoM.CommandShell
 {
     public class Cmd
     {
