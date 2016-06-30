@@ -40,21 +40,29 @@ namespace RichoM.CommandShell
             return this;
         }
 
-        public Process Execute(Action<int> callback)
+        public Process Execute(Action<int> callback, bool async = true)
         {
-            return Execute((code, output, error) => callback(code));
+            return Execute((code, output, error) => callback(code), async);
         }
 
-        public Process Execute(Action<int, string> callback)
+        public Process Execute(Action<int, string> callback, bool async = true)
         {
-            return Execute((code, output, error) => callback(code, output));
+            return Execute((code, output, error) => callback(code, output), async);
         }
 
-        public Process Execute(Action<int, string, string> callback)
+        public Process Execute(Action<int, string, string> callback, bool async = true)
         {
             Process process = System.Diagnostics.Process.Start(info);
-            process.EnableRaisingEvents = true;
-            process.Exited += (sender, e) => ExecuteCallback(process, callback);
+            if (async)
+            {
+                process.EnableRaisingEvents = true;
+                process.Exited += (sender, e) => ExecuteCallback(process, callback);
+            }
+            else
+            {
+                process.WaitForExit();
+                ExecuteCallback(process, callback);
+            }
             return process;
         }
 
