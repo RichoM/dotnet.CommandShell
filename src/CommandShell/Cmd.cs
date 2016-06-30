@@ -24,7 +24,8 @@ namespace RichoM.CommandShell
 
         private Cmd(string fileName, string[] arguments)
         {
-            info = new ProcessStartInfo(fileName, string.Join(" ", arguments));
+            string argString = string.Join(" ", arguments.Select(each => "\"" + each + "\""));
+            info = new ProcessStartInfo(fileName, argString);
             info.WindowStyle = ProcessWindowStyle.Hidden;
             info.RedirectStandardError = true;
             info.RedirectStandardOutput = true;
